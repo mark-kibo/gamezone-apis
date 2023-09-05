@@ -23,4 +23,4 @@ class Profile(models.Model):
 class GameZoneUser(AbstractUser):
     
     # Add any additional fields you need
-    profile=models.ForeignKey(Profile, on_delete=models.CASCADE, )
+    profile=models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True )
