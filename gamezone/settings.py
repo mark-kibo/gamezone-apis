@@ -50,10 +50,17 @@ INSTALLED_APPS = [
     "rest_framework",
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    "rest_framework_simplejwt.token_blacklist",
+
+    "corsheaders",
+
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    "corsheaders.middleware.CorsMiddleware",
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,6 +68,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOWED_ORIGINS=[
+
+]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'gamezone.urls'
 
@@ -72,11 +84,21 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
-    'DEFAULT_AUTHENTICATION_CLASSES':[
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
+# import timedelta from datetime
+from datetime import timedelta
+SIMPLE_JWT={
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS":True,
+    "BLACKLIST_AFTER_ROTATION":True,
+}
+
+# cors headers
+
 
 TEMPLATES = [
     {
@@ -166,9 +188,3 @@ AUTH_USER_MODEL="accounts.GameZoneUser"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# import timedelta from datetime
-from datetime import timedelta
-SIMPLE_JWT={
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-}
