@@ -3,12 +3,12 @@ from rest_framework.response import Response
 from .models import Profile, GameZoneUser
 from .serializers import GamezoneUserSerializer, ProfileSeriaLizer
 from rest_framework.viewsets import ViewSet
-from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPIView
+from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.hashers import make_password
@@ -17,24 +17,27 @@ import uuid
 class GamezoneUserViewset(ListCreateAPIView):
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticated]
 class DestroyUserView(DestroyAPIView):
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer
     lookup_field="pk"
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticated]
 
 class UpdateUserView(UpdateAPIView):
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer
     lookup_field="pk"
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticated]
 
-  
+class RetrieveUSerView(RetrieveAPIView):
+    queryset=GameZoneUser.objects.all().all()
+    serializer_class=GamezoneUserSerializer
+    lookup_field="pk"
 
 class ProfileView(ViewSet):
     queryset=Profile.objects.all()
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticated]
 
     # retrieve profile
     def retrieve(self, request, id=None):

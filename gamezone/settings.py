@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     # apps
     'accounts',
     'authapp',
-    'store',
+   
+    'new',
 
     # configured apps
     "rest_framework",
@@ -60,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     "corsheaders.middleware.CorsMiddleware",
-
+    'new.middleware.DisableBrowserCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -70,7 +71,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS=[
-
+"http://127.0.0.1:5173",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -82,7 +83,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.DjangoModelPermissions'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',

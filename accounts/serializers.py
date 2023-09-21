@@ -13,7 +13,7 @@ class GamezoneUserSerializer(ModelSerializer):
     class Meta:
         model=GameZoneUser
         fields=[
-           'username', 'email', 'password', 'profile'
+           'id','username', 'email', 'password', 'profile'
         ]
         read_only_fields = ['profile']
 
