@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Sale
+from .models import Product, Sale, Loss
 
 
 
@@ -34,6 +34,8 @@ class SalesSerializer(serializers.ModelSerializer):
         return instance.product.name
 
         
-
-    
+class LossSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Loss
+        fields="__all__"
 

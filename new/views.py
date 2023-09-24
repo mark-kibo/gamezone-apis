@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ViewSet
-from .models import Product, Sale
-from .serializers import ProductSerializer, SalesSerializer
+from .models import Product, Sale, Loss
+from .serializers import ProductSerializer, SalesSerializer, LossSerializer
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.utils.decorators import method_decorator
@@ -14,7 +14,8 @@ from accounts.models import GameZoneUser
 
 
 class ProductViewset(ViewSet):
-    queryset=Product.objects.filter(sold_out=False).all()
+    
+    queryset=Product.objects.all()
     permission_classes=[IsAuthenticatedOrReadOnly]
     # CREATE PRODUCT
     def create_product(self, request, *args, **kwargs):
@@ -57,6 +58,7 @@ class ProductViewset(ViewSet):
     @method_decorator(never_cache)
     def list(self, request, *args, **kwargs):
         # Use the nocache method
+        products=Product.objects.filter(sold_out=False).all()
         print(self.queryset)
         serializer = ProductSerializer(self.queryset, many=True)
         return Response(serializer.data)
@@ -87,6 +89,7 @@ class ProductViewset(ViewSet):
 
 
 class ProductCreateView(ListCreateAPIView):
+ 
     queryset=Product.objects.all()
     print(queryset)
     serializer_class=ProductSerializer
@@ -94,36 +97,44 @@ class ProductCreateView(ListCreateAPIView):
 
 
 class ProductDeleteView(DestroyAPIView):
+
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
     lookup_field="pk"
     permission_classes=[IsAuthenticatedOrReadOnly]
 
 class UpdateViewSet(ViewSet):
-    queryset=Product.objects.all()
 
-    def update_product(self, request, pk=None):
-        product=get_object_or_404(Product, id=pk)
+    # queryset=Sale.objects.all()
+
+    def update_product(self, request):
         data_passed=request.data
+        print(data_passed)
+        product=get_object_or_404(Product, id=data_passed['id'])
+        print(product)
 
         if product:
             if product.quantity > data_passed["quantity_sold"] or product.quantity == data_passed["quantity_sold"]:
-                product.quantity -= int(data_passed["quantity_sold"])
-                product.save()
+    
                 sale = Sale(
                     product=product,
                     quantity_sold=data_passed["quantity_sold"],
                     sale_price=data_passed["sale_price"]
                 )
+                
                 sale.save()
-                serializer=SalesSerializer(sale)
-                return Response(serializer.data)
-            return Response({"error": "quantity error"})
+                sale.product.quantity =sale.product.quantity - int(data_passed["quantity_sold"])
+                if int(sale.product.quantity) == 0:
+                    sale.product.sold_out=True
+                
+                return Response({"MESSAGE": "OK"})
+            return Response({"error": "quantity error, reduce quantity"})
         return Response({"error":"product does not exist"})
                 
 
 
 class SalesViewSet(ListCreateAPIView):
+ 
     queryset=Sale.objects.all()
     permission_classes=[IsAuthenticatedOrReadOnly]
     serializer_class=SalesSerializer
@@ -175,9 +186,37 @@ print(Sale.objects.all())
 
 
 class ListSales(ViewSet):
+ 
     queryset=Sale.objects.all()
     def retriev(self, request):
         serializer=SalesSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
-    
+
+class LossViewSet(ViewSet):
+
+    queryset=Loss.objects.all()
+
+    def ListLoss(self, request):
+        serializer=LossSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+   
+
+    def CreateLoss(self, request):
+        data=request.data
+        name = data["loss_name"]
+        amount = int(data["loss_amount"])  # Convert to integer
+        description = data["loss_description"]
+        product_associated = data["loss_to_product"]
+
+        product = Product.objects.filter(name=product_associated).first()
+        print(data)
+        if product is not None:
+            loss=Loss.objects.create(loss_name=name, loss_amount=amount, loss_description=description, loss_to_product=product)
+            loss.save()
+            return Response({"ok": "ok"})
+        else:
+            loss=Loss(loss_name=name, loss_amount=amount, loss_description=description)
+            loss.save()
+            return Response({"ok": "ok"})

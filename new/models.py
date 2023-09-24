@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
@@ -8,7 +9,7 @@ class Product(models.Model):
     price=models.IntegerField(default=90)
     image = models.ImageField(upload_to="media", null=True, blank=True)
     sold_out=models.BooleanField(default=False)
-    
+    date_recorded=models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table = 'Products'
 
@@ -28,3 +29,14 @@ class Sale(models.Model):
         self.product.quantity -= self.quantity_sold
         self.product.save()
         super().save(*args, **kwargs)
+
+
+class Loss(models.Model):
+    loss_name=models.CharField(max_length=255, default=None)
+    loss_amount=models.IntegerField(default=0)
+    loss_description = models.CharField(max_length=255, default=None)
+    loss_to_product=models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, default=None)
+
+
+    def __str__(self):
+        return super().loss_mame

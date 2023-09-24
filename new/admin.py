@@ -4,3 +4,4 @@ from . import models
 
 admin.site.register(models.Product)
 admin.site.register(models.Sale)
+admin.site.register(models.Loss)
