@@ -44,7 +44,7 @@ class ProductAggregateAPIView(ViewSet):
 
         # //losses
         total_loss_incurred=Loss.objects.aggregate(total_loss=Sum('loss_amount'))['total_loss']
-        if total_profit != None:
+        if total_profit != None and total_loss_incurred != None:
             total_profit = int(total_sales_revenue["total_price"])- int(total_loss_incurred)
 # If you want to handle cases where there are no sales, you can provide a default value
         if total_profit is None:
