@@ -39,16 +39,17 @@ class ProductAggregateAPIView(ViewSet):
        
     #    get profit earned
         total_profit = Sale.objects.aggregate(total_profit=Sum('product__price'))['total_profit']
-        if total_profit != None:
-
-            total_profit = int(total_sales_revenue["total_price"])- int(total_profit)
+       
         top_products_by_quantity = Product.objects.annotate(total_quantity_sold=Sum('quantity')).order_by('total_quantity_sold')[:5]
 
         # //losses
         total_loss_incurred=Loss.objects.aggregate(total_loss=Sum('loss_amount'))['total_loss']
+        if total_profit != None:
+            total_profit = int(total_sales_revenue["total_price"])- int(total_loss_incurred)
 # If you want to handle cases where there are no sales, you can provide a default value
         if total_profit is None:
             total_profit = 0
+
 
         return Response(
             {
