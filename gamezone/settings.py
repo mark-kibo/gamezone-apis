@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+import dj_database_url
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY') or "mark"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG') == "TRUE"
+DEBUG = os.environ.get('DEBUG', "False").lower() == "true"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -130,7 +130,7 @@ DATABASES = {
     }
 }
 
-# # set postgre database
+# set postgre database
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -141,6 +141,10 @@ DATABASES = {
 #         'PORT': '',          # Leave empty to use the default PostgreSQL port (usually 5432)
 #     }
 # }
+
+# postgres://gamezone_apis_user:QN8y81D0trzde0iwHMSDYQtpi6ykLub3@dpg-ckgidvmafg7c73cphec0-a.oregon-postgres.render.com/gamezone_apis
+database_url=os.environ.get("DATABASE_URL")
+DATABASES["default"]=dj_database_url.parse(f'{database_url}')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
