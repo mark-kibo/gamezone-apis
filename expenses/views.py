@@ -4,13 +4,14 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import Expense
 from .serializers import ExpenseSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 # Create your views here.
 
 
 
 class ExpenseViewset(ViewSet):
     queryset=Expense.objects.all()
-
+    permission_classes=[IsAuthenticatedOrReadOnly]
 
     def create_expense(self, request):
         data=request.data
