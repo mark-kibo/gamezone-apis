@@ -29,7 +29,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 
 class ProductAggregateAPIView(ViewSet):
-
     queryset=Product.objects.all()
     def get_overview(self, request, *args, **kwargs):
         # Calculate the aggregate (e.g., sum of all product prices)

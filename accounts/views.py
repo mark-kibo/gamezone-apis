@@ -25,6 +25,7 @@ class DestroyUserView(DestroyAPIView):
     permission_classes=[IsAuthenticated]
 
 class UpdateUserView(UpdateAPIView):
+    
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer
     lookup_field="pk"
@@ -36,6 +37,7 @@ class RetrieveUSerView(RetrieveAPIView):
     lookup_field="pk"
 
 class ProfileView(ViewSet):
+    
     queryset=Profile.objects.all()
     permission_classes=[IsAuthenticated]
 

@@ -6,7 +6,7 @@ from django.db import models
 class Expense(models.Model):
     name=models.CharField(max_length=255)
     amount=models.IntegerField()
-    dateField=models.DateField(auto_now_add=True)
+    date=models.DateField(auto_now_add=True)
 
 
     def __str__(self):
