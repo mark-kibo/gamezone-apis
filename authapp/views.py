@@ -39,7 +39,9 @@ class ProductAggregateAPIView(ViewSet):
        
     #    get profit earned
         total_profit = Sale.objects.aggregate(total_profit=Sum('product__price'))['total_profit']
-        total_profit = int(total_sales_revenue["total_price"])- int(total_profit)
+        if total_profit != None:
+
+            total_profit = int(total_sales_revenue["total_price"])- int(total_profit)
         top_products_by_quantity = Product.objects.annotate(total_quantity_sold=Sum('quantity')).order_by('total_quantity_sold')[:5]
 
         # //losses
@@ -50,11 +52,12 @@ class ProductAggregateAPIView(ViewSet):
 
         return Response(
             {
-                "total_loss": total_loss_incurred,
-                "total_revenue": total_sales_revenue["total_price"],
-                "profit" : total_profit,
-            "aggregate_results": aggregate_result,
-             "totalusers":  total_users,
-             "total_products": total_products}
+                "total_loss": total_loss_incurred or 0,
+                "total_revenue": total_sales_revenue["total_price"] or 0,
+                "profit" : total_profit or 0,
+            "aggregate_results": aggregate_result or 0,
+             "totalusers":  total_users or 0,
+             "total_products": total_products or 0
+            }
         )
     permission_classes=[IsAuthenticatedOrReadOnly]
