@@ -11,8 +11,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to="media", null=True, blank=True)
     sold_out=models.BooleanField(default=False)
     date_recorded=models.DateTimeField(auto_now_add=True)
-    class Meta:
-        db_table = 'Products'
+    
 
 
 

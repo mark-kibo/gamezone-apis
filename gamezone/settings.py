@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or "mark"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', "False").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -144,7 +144,7 @@ DATABASES = {
 
 # postgres://gamezone_apis_user:QN8y81D0trzde0iwHMSDYQtpi6ykLub3@dpg-ckgidvmafg7c73cphec0-a.oregon-postgres.render.com/gamezone_apis
 database_url=os.environ.get("DATABASE_URL")
-DATABASES["default"]=dj_database_url.parse(f'{database_url}')
+DATABASES["default"]=dj_database_url.parse('postgres://gamezone_apis_dqyp_user:lx6SmrJwNPri1bMsOA5UD27c9ljrY8yt@dpg-ckgjt2q12bvs73fgfieg-a.oregon-postgres.render.com/gamezone_apis_dqyp')
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

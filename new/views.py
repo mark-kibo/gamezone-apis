@@ -15,6 +15,7 @@ from accounts.models import GameZoneUser
 
 class ProductViewset(ViewSet):
 
+
     
     queryset=Product.objects.all()
     permission_classes=[IsAuthenticatedOrReadOnly]
@@ -90,7 +91,7 @@ class ProductViewset(ViewSet):
 
 
 class ProductCreateView(ListCreateAPIView):
-
+   
  
     queryset=Product.objects.all()
     print(queryset)
@@ -99,6 +100,7 @@ class ProductCreateView(ListCreateAPIView):
 
 
 class ProductDeleteView(DestroyAPIView):
+    
    
     queryset=Product.objects.all()
     serializer_class=ProductSerializer
@@ -106,7 +108,7 @@ class ProductDeleteView(DestroyAPIView):
     permission_classes=[IsAuthenticatedOrReadOnly]
 
 class UpdateViewSet(ViewSet):
-
+    
 
     queryset=Sale.objects.all()
 
@@ -138,7 +140,7 @@ class UpdateViewSet(ViewSet):
 
 class SalesViewSet(ListCreateAPIView):
 
- 
+    
     queryset=Sale.objects.all()
     permission_classes=[IsAuthenticatedOrReadOnly]
     serializer_class=SalesSerializer
@@ -185,12 +187,12 @@ class SalesViewSet(ListCreateAPIView):
         serializer = SalesSerializer(sale)
         return Response(serializer.data)
 
-print(Sale.objects.all())
+# print(Sale.objects.all())
 
 
 
 class ListSales(ViewSet):
-
+  
 
  
     queryset=Sale.objects.all()
@@ -200,7 +202,7 @@ class ListSales(ViewSet):
 
 
 class LossViewSet(ViewSet):
-    pass
+ 
 
     queryset=Loss.objects.all()
 
