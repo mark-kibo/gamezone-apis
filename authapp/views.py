@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from new.models import Product, Sale, Loss
+from expenses.models import Expense
 from accounts.models import GameZoneUser
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -36,7 +37,9 @@ class ProductAggregateAPIView(ViewSet):
         total_users=GameZoneUser.objects.count()
         total_products=Product.objects.count()
         total_sales_revenue=Sale.objects.aggregate(total_price=Sum('sale_price'))
-       
+        
+        # expense
+        expenses=Expense.objects.aggregate(total_amount=Sum('amount'))['total_amount']
     #    get profit earned
         total_profit = Sale.objects.aggregate(total_profit=Sum('product__price'))['total_profit']
        
@@ -53,6 +56,7 @@ class ProductAggregateAPIView(ViewSet):
 
         return Response(
             {
+                "total_expense": expenses or 0,
                 "total_loss": total_loss_incurred or 0,
                 "total_revenue": total_sales_revenue["total_price"] or 0,
                 "profit" : total_profit or 0,

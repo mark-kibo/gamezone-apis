@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'authapp',
    
     'new',
+    'expenses',
 
     # configured apps
     "rest_framework",
