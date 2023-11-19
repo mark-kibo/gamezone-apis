@@ -42,7 +42,7 @@ class ProductViewset(ViewSet):
         data = request.data
         if product is not None:
             serializer=ProductSerializer(instance=product,
-                                         data=data)
+                                         data=data, partial=True)
             # chack if data passed is valid and return a product response
             if serializer.is_valid(raise_exception=True):
                 serializer.save()

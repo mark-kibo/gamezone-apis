@@ -18,6 +18,7 @@ class GamezoneUserViewset(ListCreateAPIView):
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer
     permission_classes=[IsAuthenticated]
+    
 class DestroyUserView(DestroyAPIView):
     queryset=GameZoneUser.objects.all().all()
     serializer_class=GamezoneUserSerializer

@@ -15,7 +15,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'quantity'
         ]
-    
+
+
 class SalesSerializer(serializers.ModelSerializer):
     product_name=serializers.SerializerMethodField(read_only=True)
     class Meta:

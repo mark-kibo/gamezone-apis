@@ -24,10 +24,11 @@ class GamezoneUserSerializer(ModelSerializer):
         return super().create(validated_data)
     
     def update(self, instance, validated_data):
-        pass6=validated_data['password']
+        pass6=validated_data.get('password')
         print(pass6)
-        validated_data['password']=make_password(pass6)
-        print( validated_data['password'])
+        if pass6:
+            validated_data['password']=make_password(pass6)
+            print( validated_data['password'])
         return super().update(instance, validated_data)
     
     
